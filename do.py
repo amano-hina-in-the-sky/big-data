@@ -3,86 +3,11 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-#from sklearn.cluster import KMeans
-#from sklearn.metrics import silhouette_score
-
-'''
-df = pd.read_csv("public_data.csv", sep=",")
-
-data_lists = df.values.tolist()
-
-Num = len(data_lists)
-N = len(data_lists[0]) - 1
-
-l = 0
-r = 5000
-tmp = []
-labels = []
-for _ in range(200):
-    print(_)
-    mid = (l + r) / 2
-    tmp = []
-    labels = []
-    WA = 0
-    for i in range(Num):
-        pos = -1
-        cnt = 0
-        for j in range(len(tmp)):
-            dis = 0
-            for k in range(N):
-                dis += (tmp[j][k + 1] - data_lists[i][k + 1]) * (tmp[j][k + 1] - data_lists[i][k + 1])
-            if dis < mid * mid:
-                cnt = cnt + 1
-                pos = j
-        if cnt > 1:
-            WA = 1
-            break
-        if cnt == 1:
-            labels.append(j)
-        else:
-            labels.append(len(tmp))
-            tmp.append(data_lists[i])
-            if len(tmp) > 15:
-                break
-    if WA == 1:
-        r = mid
-    else:
-        if len(tmp) > 15:
-            l = mid
-        else:
-            r = mid
-print(l, r)
-print(len(labels))
-tmp = []
-labels = []
-WA = 0
-for i in range(Num):
-    pos = -1
-    for j in range(len(tmp)):
-        dis = 0
-        for k in range(N):
-            dis += (tmp[j][k + 1] - data_lists[i][k + 1]) * (tmp[j][k + 1] - data_lists[i][k + 1])
-        if dis < 10000 * 10000:
-            pos = j
-    if pos != -1:
-        labels.append(j)
-    else:
-        labels.append(len(tmp))
-        print(len(tmp))
-        tmp.append(data_lists[i])
-
-print(len(tmp))
-
-df2 = pd.DataFrame({
-    "id": range(1, Num + 1),
-    "label": labels
-})
-df2.to_csv("public_submission.csv", index=False)
-'''
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
 
 
-
-# 0.9767099
+# 0.9775464
 df = pd.read_csv("public_data.csv", sep=",")
 
 data_lists = df.values.tolist()
@@ -116,79 +41,73 @@ H = []
 F = []
 D1 = []
 D2 = []
+D3 = []
 D23 = []
 CCC = 0
+rd = 0
 
 for row in data_lists:
-    if row[2] == 0 or row[3] == 0:
-        print('amano_hina is trash')
-    D1.append(row[3])
-    D2.append(row[4])
     D23.append(row[2]/row[3])
     if row[1] > row[2] + row[3] + row[4]:
-        if row[1] < row[2] or row[2] < row[3] or row[3] < row[4]:
-            print(row)
-            CCC += 1
         g1 = g1 + 1
-        if row[2] > row[3]:
-            labels.append(1 * 4 + 1)
-        else:
-            labels.append(1 * 4 + 1)
-    elif row[2] > row[1] + row[3] + row[4]:
-        if row[4] <= 6:
-            diff.append(row[1] - row[3])
-            if row[1] - row[3] > 50:
-                g2 = g2 + 1
-                labels.append(2 * 4 + 2)
-            elif row[1] - row[3] < -50:
-                g3 = g3 + 1
-                labels.append(2 * 4 + 4)
-            else:
-                g4 = g4 + 1
-                labels.append(2 * 4 + 1)
+        labels.append(1 * 4 + 1)
 
+    elif row[2] > row[1] + row[3] + row[4]:
+        if row[1] - row[3] < -30:
+            g2 = g2 + 1
+            labels.append(2 * 4 + 1)
+        elif row[1] - row[3] > 30:
+            g3 = g3 + 1
+            labels.append(2 * 4 + 2)
         else:
-            g5 = g5 + 1
-            labels.append(2 * 4 + 3)
-    elif row[3] > row[1] + row[2] + row[4]:
-        if row[1] <= 6:
-            diff2.append(row[2] - row[4])
-            if row[2] - row[4] > 50:
-                g6 = g6 + 1
-                labels.append(3 * 4 + 1)
-            elif row[2] - row[4] < -50:
-                g7 = g7 + 1
-                labels.append(3 * 4 + 2)
+            if row[4] < 10:
+                g4 = g4 + 1
+                labels.append(2 * 4 + 3)
             else:
-                g8 = g8 + 1
-                labels.append(3 * 4 + 4)
+                g5 = g5 + 1
+                labels.append(2 * 4 + 4)
+
+    elif row[3] > row[1] + row[2] + row[4]:
+        if row[2] - row[4] < -30:
+            g6 = g6 + 1
+            labels.append(3 * 4 + 1)
+        elif row[2] - row[4] > 30:
+            g7 = g7 + 1
+            labels.append(3 * 4 + 2)
         else:
-            g9 = g9 + 1
-            labels.append(3 * 4 + 3)
+            if row[1] < 10:
+                g8 = g8 + 1
+                labels.append(3 * 4 + 3)
+            else:
+                g9 = g9 + 1
+                labels.append(3 * 4 + 4)
+
     elif row[4] > row[1] + row[2] + row[3]:
-        #print(row)
         g10 = g10 + 1
         labels.append(4 * 4 + 1)
-    else:
-        if row[1] <= 6:
-            g11 = g11 + 1
-            labels.append(5 * 4 + 1)
-        elif row[4] <= 6:
-            g12 = g12 + 1
-            labels.append(5 * 4 + 2)
-        else:
 
-            #print(row)
-            F.append(row[1] - row[4])
-            if row[1] - row[4] > 50:
+    else:
+        rd += 1
+        D1.append(row[1])
+        D2.append(row[4])
+        if row[1] - row[4] > 50:
+
+            if row[4] <= 10:
+                g11 = g11 + 1
+                labels.append(5 * 4 + 1)
+            else:
+                g12 = g12 + 1
+                labels.append(5 * 4 + 2)
+        elif row[4] - row[1] > 50:
+            if row[1] <= 10:
                 g13 = g13 + 1
                 labels.append(5 * 4 + 3)
-            elif row[1] - row[4] < -50:
+            else:
                 g14 = g14 + 1
                 labels.append(5 * 4 + 4)
-            else:
-                g15 = g15 + 1
-                labels.append(5 * 4 + 5)
+        else:
+            g15 = g15 + 1
+            labels.append(5 * 4 + 5)
 
             C3 += 1
 
@@ -199,6 +118,7 @@ plt.xlabel('D1')
 plt.ylabel('D2')
 plt.grid(True)
 plt.savefig('dimension_plot.png')
+
 print(C1, C2, C3)
 print(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15)
 diff.sort()
@@ -219,19 +139,12 @@ df2 = pd.DataFrame({
 df2.to_csv("public_submission.csv", index=False)
 
 
-
 '''
 df = pd.read_csv("public_data.csv")
 X = df.iloc[:, 1:]
-print(X)
-for i in range(len(X)):
-    sum = 0
-    for j in range(len(X[i])):
-        sum += X[i][j]
-    print(i, sum)
 
 n = X.shape[1]
-k = 4 * n - 3
+k = 4 * n - 1
 k = 11
 
 kmeans = KMeans(n_clusters=k, random_state=69)
@@ -246,4 +159,3 @@ output_df = pd.DataFrame({
 
 output_df.to_csv("public_submission.csv", index=False)
 '''
-
