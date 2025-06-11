@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 
-# 0.9775
+# 0.9779
 df = pd.read_csv("public_data.csv", sep=",")
 
 data_lists = df.values.tolist()
@@ -16,10 +16,6 @@ Num = len(data_lists)
 N = len(data_lists[0]) - 1
 
 labels = []
-C1 = 0
-C2 = 0
-C3 = 0
-
 g1 = 0
 g2 = 0
 g3 = 0
@@ -35,14 +31,8 @@ g12 = 0
 g13 = 0
 g14 = 0
 g15 = 0
-diff = []
-diff2 = []
-H = []
-F = []
 D1 = []
 D2 = []
-D3 = []
-CCC = 0
 
 for row in data_lists:
     if row[1] > row[2] + row[3] + row[4]:
@@ -50,10 +40,10 @@ for row in data_lists:
         labels.append(1 * 4 + 1)
 
     elif row[2] > row[1] + row[3] + row[4]:
-        if row[1] - row[3] < -30:
+        if row[1] - row[3] < -50:
             g2 = g2 + 1
             labels.append(2 * 4 + 1)
-        elif row[1] - row[3] > 30:
+        elif row[1] - row[3] > 50:
             g3 = g3 + 1
             labels.append(2 * 4 + 2)
         else:
@@ -65,10 +55,10 @@ for row in data_lists:
                 labels.append(2 * 4 + 4)
 
     elif row[3] > row[1] + row[2] + row[4]:
-        if row[2] - row[4] < -30:
+        if row[2] - row[4] < -50:
             g6 = g6 + 1
             labels.append(3 * 4 + 1)
-        elif row[2] - row[4] > 30:
+        elif row[2] - row[4] > 50:
             g7 = g7 + 1
             labels.append(3 * 4 + 2)
         else:
@@ -84,18 +74,15 @@ for row in data_lists:
         labels.append(4 * 4 + 1)
 
     else:
-        D1.append(row[1])
-        D2.append(row[4])
         if row[1] - row[4] > 50:
-
-            if row[4] <= 10:
+            if row[4] < 10:
                 g11 = g11 + 1
                 labels.append(5 * 4 + 1)
             else:
                 g12 = g12 + 1
                 labels.append(5 * 4 + 2)
         elif row[4] - row[1] > 50:
-            if row[1] <= 10:
+            if row[1] < 10:
                 g13 = g13 + 1
                 labels.append(5 * 4 + 3)
             else:
@@ -104,8 +91,6 @@ for row in data_lists:
         else:
             g15 = g15 + 1
             labels.append(5 * 4 + 5)
-
-            C3 += 1
 
 
 print(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15)
@@ -125,7 +110,6 @@ plt.ylabel('D2')
 plt.grid(True)
 plt.savefig('dimension_plot.png')
 '''
-
 
 # Some data
 # (k = 15, random_state = 0) 0.8828

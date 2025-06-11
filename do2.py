@@ -14,10 +14,6 @@ N = len(data_lists[0]) - 1
 
 labels = []
 g = []
-GG = []
-C1 = 0
-C2 = 0
-C3 = 0
 D1 = []
 D2 = []
 for i in range(10 * (N + 1)):
@@ -33,15 +29,14 @@ for row in data_lists:
             pos = i + 1
     if pos > 1 and pos < N:
         Det = 0
-
         if pos <= N // 2:
             Det = pos + 2
         else:
             Det = pos - 2
-        if row[pos - 1] - row[pos + 1] < -30:
+        if row[pos - 1] - row[pos + 1] < -50:
             g[10 * pos + 1] += 1
             labels.append(10 * pos + 1)
-        elif row[pos - 1] - row[pos + 1] > 30:
+        elif row[pos - 1] - row[pos + 1] > 50:
             g[10 * pos + 2] += 1
             labels.append(10 * pos + 2)
         else:
@@ -58,15 +53,15 @@ for row in data_lists:
         g[10 * N + 1] += 1
         labels.append(10 * N + 1)
     else:
-        if row[N // 2 - 1] - row[N // 2 + 2] > 70:
-            if row[N // 2 + 2] <= 10:
+        if row[N // 2 - 1] - row[N // 2 + 2] > 50:
+            if row[N // 2 + 2] < 10:
                 g[1] += 1
                 labels.append(1)
             else:
                 g[2] += 1
                 labels.append(2)
-        elif row[N // 2 + 2] - row[N // 2 - 1] > 70:
-            if row[N // 2 - 1] <= 10:
+        elif row[N // 2 + 2] - row[N // 2 - 1] > 50:
+            if row[N // 2 - 1] < 10:
                 g[3] += 1
                 labels.append(3)
             else:
@@ -75,6 +70,7 @@ for row in data_lists:
         else:
             g[5] += 1
             labels.append(5)
+
 '''
 plt.figure(figsize=(10, 8))
 plt.scatter(D1, D2, alpha=0.6, s = 1)
