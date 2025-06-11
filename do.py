@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 
-# 0.9775464
+# 0.9775
 df = pd.read_csv("public_data.csv", sep=",")
 
 data_lists = df.values.tolist()
@@ -42,12 +42,9 @@ F = []
 D1 = []
 D2 = []
 D3 = []
-D23 = []
 CCC = 0
-rd = 0
 
 for row in data_lists:
-    D23.append(row[2]/row[3])
     if row[1] > row[2] + row[3] + row[4]:
         g1 = g1 + 1
         labels.append(1 * 4 + 1)
@@ -87,7 +84,6 @@ for row in data_lists:
         labels.append(4 * 4 + 1)
 
     else:
-        rd += 1
         D1.append(row[1])
         D2.append(row[4])
         if row[1] - row[4] > 50:
@@ -111,27 +107,8 @@ for row in data_lists:
 
             C3 += 1
 
-plt.figure(figsize=(10, 8))
-plt.scatter(D1, D2, alpha=0.6, s = 1)
-plt.title('D1 D2')
-plt.xlabel('D1')
-plt.ylabel('D2')
-plt.grid(True)
-plt.savefig('dimension_plot.png')
 
-print(C1, C2, C3)
 print(g1, g2, g3, g4, g5, g6, g7, g8, g9, g10, g11, g12, g13, g14, g15)
-diff.sort()
-diff2.sort()
-H.sort()
-F.sort()
-D23.sort()
-#print(diff)
-#print(diff2)
-#print(H)
-#print(F)
-#print(D23)
-print(CCC)
 df2 = pd.DataFrame({
     "id": range(1, Num + 1),
     "label": labels
@@ -140,14 +117,33 @@ df2.to_csv("public_submission.csv", index=False)
 
 
 '''
+plt.figure(figsize=(10, 8))
+plt.scatter(D1, D2, alpha=0.6, s = 1)
+plt.title('D1 D2')
+plt.xlabel('D1')
+plt.ylabel('D2')
+plt.grid(True)
+plt.savefig('dimension_plot.png')
+'''
+
+
+# Some data
+# (k = 15, random_state = 0) 0.8828
+# (k = 15, random_state = 1) 0.8793
+# (k = 15, random_state = 2) 0.8124
+# (k = 15, random_state = 3) 0.8833
+# (k = 15, random_state = 4) 0.8828
+# (k = 15, random_state = 5) 0.8852
+# (k = 15, random_state = 6) 0.8270
+
+'''
 df = pd.read_csv("public_data.csv")
 X = df.iloc[:, 1:]
 
 n = X.shape[1]
-k = 4 * n - 1
-k = 11
+k = 15
 
-kmeans = KMeans(n_clusters=k, random_state=69)
+kmeans = KMeans(n_clusters=k, random_state=6)
 kmeans.fit(X)
 
 labels = kmeans.labels_
