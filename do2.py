@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 #from sklearn.metrics import silhouette_score
 
 df = pd.read_csv("private_data.csv", sep=",")
-
+#df = pd.read_csv("public_data.csv", sep=",")
 data_lists = df.values.tolist()
 Num = len(data_lists)
 N = len(data_lists[0]) - 1
@@ -89,4 +89,4 @@ df2 = pd.DataFrame({
     "label": labels
 })
 df2.to_csv("private_submission.csv", index=False)
-
+#df2.to_csv("public_submission.csv", index=False)
